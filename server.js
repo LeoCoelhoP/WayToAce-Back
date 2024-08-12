@@ -36,7 +36,7 @@ async function startServer() {
 			}
 		});
 	} catch (error) {
-		console.error('Failed to connect start the server.', err);
+		console.error('Failed to connect start the server.', error);
 		process.exit(1);
 	}
 }

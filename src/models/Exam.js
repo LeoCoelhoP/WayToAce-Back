@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
+const Institution = require('./Institution');
 
 const examSchema = new mongoose.Schema({
-	institutionName: { type: String, required: true },
-	institutionAbbreviatedName: { type: String, required: true },
+	institution: { type: mongoose.Schema.Types.ObjectId, ref: 'Instituition' },
 	examName: {
 		type: String,
 		required: true,
 	},
+	imageSrc: { type: String, required: true },
 	pdfSrc: {
 		type: Array,
 		required: true,
@@ -15,9 +16,13 @@ const examSchema = new mongoose.Schema({
 		type: Array,
 		required: true,
 	},
-	downloads: {
+	interactions: {
 		type: Number,
 		default: 0,
+	},
+	display: {
+		type: Boolean,
+		default: true,
 	},
 });
 

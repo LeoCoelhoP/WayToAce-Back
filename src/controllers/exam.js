@@ -1,53 +1,66 @@
 const Exam = require('../models/Exam');
+const Institution = require('../models/Institution');
 
 async function getExams(req, res) {
-	const { type } = req.body;
+	try {
+		const { type } = req.body;
 
-	let exams;
-	switch (type) {
-		case 'all':
-			exams = await Exam.find({});
-			break;
-		case 'single':
-			const { id } = req.body;
-			if (!id) throw Error('Please Provide A Valid Exam Id.');
-			exams = await Exam.find({ _id: id });
-			break;
-		default:
-			exams = await Exam.find({}).sort({ downloads: -1 });
+		let exams;
+		switch (type) {
+			case 'all':
+				exams = await Exam.find({});
+				break;
+			case 'single':
+				const { id } = req.body;
+				if (!id) throw Error('Please Provide A Valid Exam Id.');
+				exams = await Exam.find({ _id: id });
+				break;
+			case 'query':
+				const { query } = req.body;
+				if (!query) throw Error('Please Provide A Valid Query.');
+				exams = await Exam.find({ examName: { $regex: query, $options: 'i' } });
+				break;
+			default:
+				exams = await Exam.find({}).sort({ downloads: -1 });
+		}
+		return res.status(200).json({ exams });
+	} catch (error) {
+		throw Error(error.message);
 	}
-	return res.status(200).json({ exams });
 }
 
 async function createExam(req, res) {
 	try {
-		const {
-			institutionName,
-			institutionAbbreviatedName,
-			examName,
-			pdfSrc,
-			questions,
-			password,
-		} = req.body;
+		const { institution, imageSrc, examName, pdfSrc, questions, password } =
+			req.body;
 
 		if (!password || password !== process.env.CREATE_EXAM_PASSWORD)
 			throw Error('Please Provide A Valid Password.');
-		if (!institutionName) throw Error('Please Provide An Institution Name.');
-		if (!institutionAbbreviatedName)
-			throw Error('Please Provide An Institution Abbreviated Name.');
+
+		if (!imageSrc) throw Error('Please Provide A Valid Image Src.');
+
+		if (!institution || !(await Institution.findById(institution)))
+			throw Error('Please Provide A Valid Institution Id.');
+
 		if (!examName) throw Error('Please Provide An Exam Name.');
+		if (await Exam.findOne({ examName }))
+			throw Error('Exam Name Already Taken.');
+
 		if (!pdfSrc) throw Error('Please Provide A Valid Pdf Src.');
 		if (!questions || !Array.isArray(questions) || questions.length === 0)
 			throw Error('Please Provide Valid Questions.');
 
 		const newExam = await new Exam({
-			institutionName,
-			institutionAbbreviatedName,
+			institution,
+			imageSrc,
 			examName,
 			pdfSrc,
 			questions,
 		});
 
+		await Institution.findByIdAndUpdate(institution, {
+			$push: { exams: newExam.id },
+		});
 		await newExam.save();
 
 		return res.json({

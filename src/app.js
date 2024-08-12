@@ -11,10 +11,10 @@ const routes = require('./routes/index');
 
 const app = express();
 const corsOptions = {
-	//Todo Change Origin Later
-	origin: '*',
+	//Todo Change Origin Later And Create Env Variable
+	origin: ['http://localhost:5173', 'http://192.168.3.11:5173'],
 	methods: ['GET', 'POST'],
-	crenditals: true,
+	credentials: true,
 	optionsSucessStatus: 200,
 };
 
