@@ -12,7 +12,7 @@ passport.use(
     {
       clientID: process.env.AZURE_CLIENT_ID,
       clientSecret: process.env.AZURE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:80/auth/azure/callback',
+      callbackURL: 'https://waytoace-back.onrender.com/auth/azure/callback',
       tenantId: process.env.AZURE_TENANT_ID,
       scope: 'openid profile email',
     },
@@ -33,7 +33,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: `http://localhost:80/auth/github/callback`,
+      callbackURL: `https://waytoace-back.onrender.com/auth/github/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       const user = await getOrCreateUser({
@@ -52,7 +52,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `http://localhost:80/auth/google/callback`,
+      callbackURL: `https://waytoace-back.onrender.com/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       const user = await getOrCreateUser({
