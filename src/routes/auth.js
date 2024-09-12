@@ -54,8 +54,8 @@ router.get(
 );
 
 router.get('/profile', async (req, res) => {
-  console.log('test');
-  console.log(req);
+  console.log(req.session);
+
   if (req.isAuthenticated()) {
     res
       .status(200)
