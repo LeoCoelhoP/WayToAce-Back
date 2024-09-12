@@ -12,7 +12,7 @@ passport.use(
     {
       clientID: process.env.AZURE_CLIENT_ID,
       clientSecret: process.env.AZURE_CLIENT_SECRET,
-      callbackURL: 'https://waytoace.onrender.com/',
+      callbackURL: 'https://waytoace-back.onrender.com/auth/azure/callback',
       tenantId: process.env.AZURE_TENANT_ID,
       scope: 'openid profile email',
     },
