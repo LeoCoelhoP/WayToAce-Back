@@ -15,7 +15,6 @@ const routes = require('./routes/index');
 const app = express();
 
 const corsOptions = {
-  // Todo Change Origin Later And Create Env Variable
   origin: ['https://waytoace.onrender.com'],
   methods: ['GET', 'POST'],
   credentials: true,
@@ -24,15 +23,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(helmet());
-//Todo Check if It Is Necessary in Production
-// app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
-app.use(express.json({ limit: '10kb' })); /
+app.use(express.json({ limit: '10kb' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
