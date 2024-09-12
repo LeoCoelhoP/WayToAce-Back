@@ -65,10 +65,13 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
+  done(null, user.profile.id); 
   done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
+  const user = await getOrCreateUser({ id });
+
   done(null, user);
 });
 
