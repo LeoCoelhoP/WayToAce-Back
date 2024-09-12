@@ -27,7 +27,6 @@ async function getInstitution(req, res) {
           .sort({ interactions: -1 })
           .exec();
     }
-    console.log(institutions);
     return res.status(200).json({ institutions });
   } catch (error) {
     console.error(error);

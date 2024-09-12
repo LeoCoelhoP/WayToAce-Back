@@ -15,7 +15,7 @@ const routes = require('./routes/index');
 const app = express();
 
 const corsOptions = {
-  origin: ['https://waytoace.onrender.com'],
+  origin: 'https://waytoace.onrender.com',
   methods: ['GET', 'POST'],
   credentials: true,
   optionsSucessStatus: 200,
@@ -53,7 +53,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 3 Days
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7, sameSite: false, secure: true }, // 3 Days
   })
 );
 app.use(passport.initialize());
